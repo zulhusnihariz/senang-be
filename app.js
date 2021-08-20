@@ -13,6 +13,8 @@ var indexRouter = require('./routes');
 
 var userRouter = require('./routes/user');
 var authenticationRouter = require('./routes/authentication');
+var productRouter = require('./routes/product');
+var locationRouter = require('./routes/location');
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(cors());
 app.use(`${baseURL}/`, indexRouter);
 app.use(`${baseURL}/user`, userRouter);
 app.use(`${baseURL}/auth`, authenticationRouter);
+app.use(`${baseURL}/product`, productRouter);
+app.use(`${baseURL}/location`, locationRouter);
 
 // app.get('/', (req, res) => {
 //   res.send('Hello World!');

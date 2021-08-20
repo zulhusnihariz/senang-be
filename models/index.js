@@ -10,7 +10,11 @@ const sequelize = new Sequelize('senang', process.env.DB_USERNAME, process.env.D
 
 const models = {
   User: require('./user')(sequelize, Sequelize),
-  Address: require('./user-address')(sequelize, Sequelize),
+  Address: require('./profile/user-address')(sequelize, Sequelize),
+  Product: require('./store/product')(sequelize, Sequelize),
+  States: require('./general-setting/states')(sequelize, Sequelize),
+  Areas: require('./general-setting/areas')(sequelize, Sequelize),
+  Postcodes: require('./general-setting/postcodes')(sequelize, Sequelize),
   // UserPayment: require('./user-payment'),
 };
 
