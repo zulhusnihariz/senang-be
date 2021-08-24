@@ -3,16 +3,31 @@ const fetch = require('node-fetch');
 
 const product = {
   getAllProduct: async (req, res) => {
-    let products = [];
     try {
       let products = [];
-      try {
-        products = await Models.Product.findAll();
-      } catch (error) {
-        console.log(error);
+
+      const isQuery = Object.keys(req.query).length > 0;
+
+      if (!isQuery) {
+        try {
+          products = await Models.Product.findAll({ include: { all: true, nested: true } });
+          res.send(products);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        const integerQuery = Array.from(req.query.category_id.split(','), Number);
+        try {
+          products = await Models.Product.findAll({
+            where: { category_id: integerQuery },
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+          });
+          res.send(products);
+        } catch (error) {
+          console.log(error);
+        }
       }
 
-      res.send(products);
       // products = await fetch('https://fakestoreapi.com/products')
       //   .then(res => res.json())
       //   .then(async json => {
@@ -35,6 +50,33 @@ const product = {
     } catch (error) {
       console.log(error);
     }
+  },
+  getAllCategory: async (req, res) => {
+    let categories = [];
+
+    try {
+      categories = await Models.Category.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      });
+      res.send(categories);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  filterProductsByCategory: async (req, res) => {
+    console.log('params', req.query);
+
+    try {
+      let categories = [];
+      categories = await Models.Product.findAll({
+        where: { category_id: [req.params.id] },
+      });
+      res.send({ categories, message: 'data retrieved successfully' });
+    } catch (error) {
+      console.log(error);
+    }
+
+    res.send(categories);
   },
 };
 

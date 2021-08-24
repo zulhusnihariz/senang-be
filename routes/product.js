@@ -5,8 +5,10 @@ var productController = require('../controllers/product-controller');
 // GET All Products
 router.get('/', productController.getAllProduct);
 
-// // GET USER by ID
-// router.get('/:id', userController.getUserById);
+// GET All Categories
+router.get('/category', productController.getAllCategory);
+
+// GET Products by Category
 
 // // CREATE USER
 // router.post('/', userController.postUser);
