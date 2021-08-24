@@ -75,7 +75,7 @@ const product = {
       //     res.send(areas);
       //   });
 
-      res.send({ data: states, message: 'Data successfully retrieved' });
+      res.send({ states, message: 'Data successfully retrieved' });
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +84,7 @@ const product = {
     try {
       const areas = await Models.Areas.findAll();
 
-      res.send({ data: areas, message: 'Data successfully retrieved' });
+      res.send({ areas, message: 'Data successfully retrieved' });
     } catch (error) {
       console.log(error);
     }
@@ -93,7 +93,7 @@ const product = {
     try {
       const postcodes = await Models.Postcodes.findAll();
 
-      res.send({ data: postcodes, message: 'Data successfully retrieved' });
+      res.send({ postcodes, message: 'Data successfully retrieved' });
     } catch (error) {
       console.log(error);
     }
@@ -101,33 +101,34 @@ const product = {
   getStatesByID: async (req, res) => {
     console.log(req.params);
     try {
-      const state = await Models.States.findOne({
+      const states = await Models.States.findOne({
         where: { state_id: req.params.id },
       });
 
-      res.send({ data: state, message: 'Data successfully retrieved' });
+      res.send({ states, message: 'Data successfully retrieved' });
     } catch (error) {
       console.log(error);
     }
   },
   getAreasByID: async (req, res) => {
+    console.log(req.params);
     try {
-      const area = await Models.Areas.findAll({
+      const areas = await Models.Areas.findAll({
         where: { state_id: req.params.id },
       });
 
-      res.send({ data: area, message: 'Data successfully retrieved' });
+      res.send({ areas, message: 'Data successfully retrieved' });
     } catch (error) {
       console.log(error);
     }
   },
   getPostcodesByID: async (req, res) => {
     try {
-      const postcode = await Models.Postcodes.findAll({
+      const postcodes = await Models.Postcodes.findAll({
         where: { state_id: req.params.state_id },
       });
 
-      res.send({ data: postcode, message: 'Data successfully retrieved' });
+      res.send({ postcodes, message: 'Data successfully retrieved' });
     } catch (error) {
       console.log(error);
     }
