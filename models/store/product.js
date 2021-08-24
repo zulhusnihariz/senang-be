@@ -11,9 +11,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: DataTypes.DECIMAL,
     description: DataTypes.STRING(1500),
-    category: DataTypes.STRING,
+    category_id: DataTypes.INTEGER,
     image: DataTypes.STRING,
   });
+
+  Product.associate = models => {
+    Product.belongsTo(models.Category);
+  };
 
   return Product;
 };
