@@ -36,15 +36,15 @@ module.exports = {
       //     updatedAt: new Date(),
       //   },
       // ]),
-      queryInterface.addConstraint('products', {
-        fields: ['category_id'],
-        type: 'foreign key',
-        references: {
-          table: 'categories',
-          field: 'category_id',
-        },
-        onDelete: 'cascade',
-      }),
+      // queryInterface.addConstraint('products', {
+      //   fields: ['category_id'],
+      //   type: 'foreign key',
+      //   references: {
+      //     table: 'categories',
+      //     field: 'category_id',
+      //   },
+      //   onDelete: 'cascade',
+      // }),
     ]);
     /**
      * Add altering commands here.
