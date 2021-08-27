@@ -5,6 +5,9 @@ var productController = require('../controllers/product-controller');
 // GET All Products
 router.get('/', productController.getAllProduct);
 
+// GET Product By Text Search
+router.get('/search/:text_condition', productController.getProductByTextSearch);
+
 // GET All Categories
 router.get('/category', productController.getAllCategory);
 
