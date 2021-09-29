@@ -24,7 +24,6 @@ const product = {
           whereCondition['price'] = { [Op.between]: req.query[key] };
       });
 
-      console.log(whereCondition);
       // if (req.query.category_id)
       //   whereCondition['category_id'] = Array.from(req.query[key].split(','), Number);
 

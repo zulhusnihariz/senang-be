@@ -16,15 +16,20 @@ const user = {
       const accessToken = await jwt.sign({ id: user.id }, process.env.ACCESS_KEY_SECRET);
       const refreshToken = await jwt.sign({ id: user.id }, process.env.REFRESH_KEY_SECRET);
       const { id, username } = await user.dataValues;
-      // const { password, createdAt, updatedAt, ...rest } = await user.dataValues;
+
+      console.log('accessToken', accessToken);
+      console.log('refreshToken', refreshToken);
 
       if (!validated) res.json({ status: false, message: 'Invalid credentials' });
 
       if (validated) {
-        res.cookie('token', refreshToken, { httpOnly: true });
         res.setHeader('authorization', `Bearer ${accessToken}`);
-        res.json({ user: { id, username }, token: true });
-        // res.json({ user: rest, token: true });
+        res
+          .cookie('REFRESH_TOKEN', refreshToken, { httpOnly: false, secure: true })
+          // .cookie('REFRESH_TOKEN', refreshToken)
+          .json({ user: { username }, accessToken });
+
+        // res.json({ user: { id, username }, accessToken });
       }
 
       console.log('successful');
@@ -48,9 +53,13 @@ const user = {
         email: req.body.email,
       });
 
-      const accessToken = await jwt.sign({ id: user.id }, process.env.ACCESS_KEY_SECRET);
+      const accessToken = await jwt.sign({ id: user.id }, process.env.ACCESS_KEY_SECRET, {
+        expiresIn: '15m',
+      });
       // const refreshToken = randtoken.uid(256);
-      const refreshToken = await jwt.sign({ id: user.id }, process.env.REFRESH_KEY_SECRET);
+      const refreshToken = await jwt.sign({ id: user.id }, process.env.REFRESH_KEY_SECRET, {
+        expiresIn: '15m',
+      });
 
       if (user) {
         res.cookie('refresh_token_', refreshToken, { httpOnly: true });
@@ -64,14 +73,13 @@ const user = {
     }
   },
   changePassword: async (req, res) => {
-    console.log(req.body);
+    console.log('changepassword:', req.body);
     let user = {};
     let validated = '';
 
     // {id: '', currentPassword: '', newPassword: ' ', confirmPassword: ''}
 
     try {
-      console.log('inside try');
       user = await Models.User.findOne({ where: { id: req.body.id } });
 
       validated = await bcrypt.compare(req.body.currentPassword, user.password);
